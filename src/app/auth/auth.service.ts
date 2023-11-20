@@ -67,9 +67,7 @@ export class AuthService {
   }
 
   async refreshToken(refresh_token: string) {
-    const verify = await this.jwtService.verifyAsync(refresh_token, {
-      secret: this.configService.get('JWT_SECRET')
-    });
+    const verify = await this.jwtService.verifyAsync(refresh_token);
 
     if (!verify) {
       throw new HttpException('Invalid token', 400);

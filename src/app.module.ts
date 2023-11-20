@@ -15,6 +15,7 @@ import {PostModule} from './app/post/post.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
       load: [config],
       validationSchema: Joi.object({
         PORT: Joi.number().default(3000),
