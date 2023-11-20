@@ -9,6 +9,7 @@ async function bootstrap(): Promise<void> {
   const configService = app.get(ConfigService);
   const PORT = +configService.get<number>("PORT");
   await app.listen(PORT);
+  console.log(`Application is running on: http://localhost:${PORT}`);
 }
 
 void bootstrap();

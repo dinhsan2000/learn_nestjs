@@ -18,7 +18,7 @@ export class PostService {
   ) {
   }
 
-  async create(createPostDto: CreatePostDto, userUuid: string) {
+  async create(createPostDto: CreatePostDto, userUuid: string, fileName: string) {
     const user = await this.userRepository.findOne({where: {uuid: userUuid}});
 
     if (!user) {
@@ -31,6 +31,7 @@ export class PostService {
       isPublished: createPostDto.isPublished,
       user: user,
       slug: slugify(createPostDto.title, {lower: true}, '_'),
+      thumbnail: fileName,
     });
     await this.postRepository.save(post);
     return post;

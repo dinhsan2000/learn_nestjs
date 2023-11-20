@@ -1,9 +1,25 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+  UseInterceptors, UploadedFile
+} from '@nestjs/common';
 import {PostService} from './post.service';
 import {CreatePostDto} from './dto/create-post.dto';
 import {UpdatePostDto} from './dto/update-post.dto';
 import {AuthGuard} from "../auth/auth.guard";
-import {Request} from "express";
+import {request, Request} from "express";
+import {multerOptions} from "../../common/storages/storage";
+import {FileInterceptor} from "@nestjs/platform-express";
+import {MulterOptions} from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
+
+const multerConfig: MulterOptions = multerOptions;
 
 @Controller()
 @UseGuards(AuthGuard)
@@ -12,8 +28,10 @@ export class PostController {
   }
 
   @Post()
-  async create(@Body() createPostDto: CreatePostDto, @Req() request: Request) {
-    const post = await this.postService.create(createPostDto, request['user'].uuid);
+  @UseInterceptors(FileInterceptor('image', multerConfig))
+  async create(@Body() createPostDto: CreatePostDto, @Req() request: Request, @UploadedFile() file: Express.Multer.File) {
+    const fileName = file.filename;
+    const post = await this.postService.create(createPostDto, request['user'].uuid, fileName);
     return ({
       'data': post,
       'message': 'Post created successfully',
