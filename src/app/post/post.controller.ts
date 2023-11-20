@@ -6,12 +6,12 @@ import {AuthGuard} from "../auth/auth.guard";
 import {Request} from "express";
 
 @Controller()
+@UseGuards(AuthGuard)
 export class PostController {
   constructor(private readonly postService: PostService) {
   }
 
   @Post()
-  @UseGuards(AuthGuard)
   async create(@Body() createPostDto: CreatePostDto, @Req() request: Request) {
     const post = await this.postService.create(createPostDto, request['user'].uuid);
     return ({
@@ -22,7 +22,6 @@ export class PostController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
   async findAll() {
     const post = await this.postService.findAll();
     return ({
@@ -33,7 +32,6 @@ export class PostController {
   }
 
   @Get(':uuid')
-  @UseGuards(AuthGuard)
   async findOne(@Param('uuid') uuid: string) {
     const post = await this.postService.findOne(uuid);
     return ({
@@ -44,7 +42,6 @@ export class PostController {
   }
 
   @Patch(':uuid')
-  @UseGuards(AuthGuard)
   async update(@Param('uuid') uuid: string, @Body() updatePostDto: UpdatePostDto, @Req() request: Request) {
     const post = await this.postService
       .update(uuid, updatePostDto, request['user'].uuid);
@@ -57,8 +54,11 @@ export class PostController {
   }
 
   @Delete(':uuid')
-  @UseGuards(AuthGuard)
-  remove(@Param('uuid') uuid: string) {
-    return this.postService.remove(String(+uuid));
+  async remove(@Param('uuid') uuid: string) {
+    await this.postService.remove(uuid)
+    return ({
+      'message': 'Post deleted successfully',
+      'status': 'success'
+    });
   }
 }

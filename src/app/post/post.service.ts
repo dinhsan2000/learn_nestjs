@@ -78,7 +78,18 @@ export class PostService {
     });
   }
 
-  remove(uuid: string) {
-    return `This action removes a #${uuid} post`;
+  async remove(uuid: string) {
+    const post = await this.postRepository.findOne({
+      where: {uuid: uuid},
+    });
+
+    if (!post) {
+      throw new HttpException('Post not found', 404);
+    }
+
+    await this.postRepository.delete({
+      uuid: uuid,
+    });
+    return;
   }
 }
