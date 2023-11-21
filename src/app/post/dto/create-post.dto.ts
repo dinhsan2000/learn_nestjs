@@ -1,9 +1,4 @@
 import { IsNotEmpty } from 'class-validator';
-import {
-  ParseFilePipe,
-  ParseFilePipeBuilder,
-  UploadedFile,
-} from '@nestjs/common';
 
 export class CreatePostDto {
   @IsNotEmpty()
@@ -14,4 +9,12 @@ export class CreatePostDto {
 
   @IsNotEmpty()
   isPublished: boolean;
+
+  image: Express.Multer.File;
+
+  @IsNotEmpty()
+  meta_key: string;
+
+  @IsNotEmpty()
+  meta_description: string;
 }

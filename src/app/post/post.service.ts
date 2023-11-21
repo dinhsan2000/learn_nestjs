@@ -5,6 +5,8 @@ import { PostEntity } from './entities/post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../user/entities/user.entity';
+import {PaginationParam} from "../../common/constants";
+import {IPaginationMeta, IPaginationOptions, paginate, Pagination} from "nestjs-typeorm-paginate";
 
 const slugify = require('slugify');
 
@@ -42,10 +44,15 @@ export class PostService {
     return post;
   }
 
-  async findAll(): Promise<PostEntity[]> {
-    return await this.postRepository.find({
-      relations: ['user'],
-    });
+  async findAll(options: IPaginationOptions, search): Promise<Pagination<PostEntity>> {
+    let offset = 0 || PaginationParam.DEFAULT_OFFSET;
+    let limit = 10 || PaginationParam.DEFAULT_LIMIT;
+    return paginate<PostEntity>(this.postRepository, options, {
+      where: {
+        isPublished: true,
+        title: search || null,
+      }
+    })
   }
 
   async findOne(uuid: string): Promise<PostEntity> {

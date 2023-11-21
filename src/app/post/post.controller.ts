@@ -9,7 +9,7 @@ import {
   UseGuards,
   Req,
   UseInterceptors,
-  UploadedFile,
+  UploadedFile, Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -19,7 +19,7 @@ import { request, Request } from 'express';
 import { multerOptions } from '../../common/storages/storage';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
-
+import { PaginationParam } from '../../common/constants';
 const multerConfig: MulterOptions = multerOptions;
 
 @Controller()
@@ -27,13 +27,33 @@ const multerConfig: MulterOptions = multerOptions;
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @Get()
+  async findAll(
+    @Query('page') page: number = PaginationParam.DEFAULT_PAGE,
+    @Query('limit') limit: number = PaginationParam.DEFAULT_LIMIT,
+    @Query('search') search: string = null,
+  ) {
+    limit = limit > 100 ? 100 : limit;
+
+    const post = await this.postService.findAll({
+      page,
+      limit,
+      route: 'http://localhost:3000/posts',
+    }, search);
+    return {
+      data: post,
+      message: 'Posts retrieved successfully',
+      status: 'success',
+    };
+  }
+
   @Post()
   @UseInterceptors(FileInterceptor('image', multerConfig))
   async create(
     @Body() createPostDto: CreatePostDto,
     @Req() request: Request,
     @UploadedFile() file: Express.Multer.File,
-  ) {
+  ): Promise<any> {
     const fileName = file.filename;
     const post = await this.postService.create(
       createPostDto,
@@ -43,16 +63,6 @@ export class PostController {
     return {
       data: post,
       message: 'Post created successfully',
-      status: 'success',
-    };
-  }
-
-  @Get()
-  async findAll() {
-    const post = await this.postService.findAll();
-    return {
-      data: post,
-      message: 'Posts retrieved successfully',
       status: 'success',
     };
   }
