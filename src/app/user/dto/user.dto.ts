@@ -6,7 +6,14 @@ class UserDto {
   private readonly createdAt: Date;
   private readonly updatedAt: Date;
 
-  constructor(id: number, name: string, email: string, password: string, createdAt: Date, updatedAt: Date) {
+  constructor(
+    id: number,
+    name: string,
+    email: string,
+    password: string,
+    createdAt: Date,
+    updatedAt: Date,
+  ) {
     this.id = id;
     this.name = name;
     this.email = email;

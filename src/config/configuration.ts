@@ -11,4 +11,4 @@ export const config = () => ({
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
   UPLOAD_LOCATION: process.env.UPLOAD_LOCATION,
   MAX_FILE_SIZE: process.env.MAX_FILE_SIZE,
-})
+});

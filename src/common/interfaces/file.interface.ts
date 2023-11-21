@@ -1,10 +1,17 @@
-import {registerDecorator, ValidationArguments, ValidationOptions} from "class-validator";
+import {
+  registerDecorator,
+  ValidationArguments,
+  ValidationOptions,
+} from 'class-validator';
 
 interface IsFileOptions {
   mime: ('image/jpg' | 'image/png' | 'image/jpeg')[];
 }
 
-export function IsFile(options: IsFileOptions, validationOptions?: ValidationOptions) {
+export function IsFile(
+  options: IsFileOptions,
+  validationOptions?: ValidationOptions,
+) {
   return function (object: Object, propertyName: string) {
     return registerDecorator({
       name: 'isFile',
@@ -14,9 +21,11 @@ export function IsFile(options: IsFileOptions, validationOptions?: ValidationOpt
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          return value?.mimetype && (options?.mime ?? []).includes(value?.mimetype);
+          return (
+            value?.mimetype && (options?.mime ?? []).includes(value?.mimetype)
+          );
         },
-      }
+      },
     });
-  }
+  };
 }

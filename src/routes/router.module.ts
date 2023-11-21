@@ -1,8 +1,8 @@
-import {Module} from "@nestjs/common";
-import {RouterModule as RouteModuleCore} from "@nestjs/core";
-import {AuthModule} from "../app/auth/auth.module";
-import {UserModule} from "../app/user/user.module";
-import {PostModule} from "../app/post/post.module";
+import { Module } from '@nestjs/common';
+import { RouterModule as RouteModuleCore } from '@nestjs/core';
+import { AuthModule } from '../app/auth/auth.module';
+import { UserModule } from '../app/user/user.module';
+import { PostModule } from '../app/post/post.module';
 
 @Module({
   imports: [
@@ -12,24 +12,22 @@ import {PostModule} from "../app/post/post.module";
         children: [
           {
             path: 'accounts',
-            module: AuthModule
+            module: AuthModule,
           },
           {
             path: 'users',
-            module: UserModule
+            module: UserModule,
           },
           {
             path: 'posts',
-            module: PostModule
-          }
-        ]
-      }
+            module: PostModule,
+          },
+        ],
+      },
     ]),
   ],
   controllers: [],
   providers: [],
   exports: [],
 })
-
-export class RouterModule {
-}
+export class RouterModule {}

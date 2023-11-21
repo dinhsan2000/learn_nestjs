@@ -1,5 +1,5 @@
-import {Injectable} from '@nestjs/common';
-import {InjectEntityManager} from "@nestjs/typeorm";
+import { Injectable } from '@nestjs/common';
+import { InjectEntityManager } from '@nestjs/typeorm';
 
 @Injectable()
 export class AppService {

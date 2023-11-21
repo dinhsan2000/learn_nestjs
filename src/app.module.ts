@@ -1,15 +1,15 @@
-import {Module} from '@nestjs/common';
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
-import {ConfigModule} from "@nestjs/config";
-import {config} from './config/configuration';
-import * as Joi from '@hapi/joi'
-import {DatabaseModule} from "./database/database.module";
-import {DataSource} from "typeorm";
-import {RouterModule} from "./routes/router.module";
-import {AuthModule} from "./app/auth/auth.module";
-import {UserModule} from "./app/user/user.module";
-import {PostModule} from './app/post/post.module';
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { config } from './config/configuration';
+import * as Joi from '@hapi/joi';
+import { DatabaseModule } from './database/database.module';
+import { DataSource } from 'typeorm';
+import { RouterModule } from './routes/router.module';
+import { AuthModule } from './app/auth/auth.module';
+import { UserModule } from './app/user/user.module';
+import { PostModule } from './app/post/post.module';
 
 @Module({
   imports: [
@@ -24,19 +24,17 @@ import {PostModule} from './app/post/post.module';
         DATABASE_USERNAME: Joi.string().required(),
         DATABASE_PASSWORD: Joi.string().required(),
         DATABASE_NAME: Joi.string().required(),
-      })
+      }),
     }),
     DatabaseModule,
     AuthModule,
     UserModule,
     RouterModule,
-    PostModule
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule {
-  constructor(private dataSource: DataSource) {
-  }
+  constructor(private dataSource: DataSource) {}
 }

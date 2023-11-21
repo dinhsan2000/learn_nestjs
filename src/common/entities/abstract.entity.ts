@@ -1,4 +1,4 @@
-import {Exclude} from "class-transformer";
+import { Exclude } from 'class-transformer';
 
 import {
   Column,
@@ -6,7 +6,7 @@ import {
   Generated,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
+} from 'typeorm';
 
 export abstract class AbstractEntity {
   @PrimaryGeneratedColumn()
@@ -14,7 +14,7 @@ export abstract class AbstractEntity {
   public id: number;
 
   @Column()
-  @Generated("uuid")
+  @Generated('uuid')
   public uuid: string;
 
   @CreateDateColumn()
